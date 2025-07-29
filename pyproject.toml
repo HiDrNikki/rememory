@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rememory"
-version = "0.3.1"
+version = "0.3.2"
 description = "A set of lightweight shared memory variable types for safe multiprocessing access"
 readme = "README.md"
 license = { text = "MIT" }
