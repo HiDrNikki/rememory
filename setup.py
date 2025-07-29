@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="rememory",
-    version="0.3.0",
+    version="0.3.1",
     description="A set of lightweight shared memory variable types for safe multiprocessing access",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
