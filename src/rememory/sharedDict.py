@@ -107,7 +107,12 @@ class RememoryDict(UserDict, Generic[KT, VT]):
 
     def __repr__(self):
         return f"<RememoryDict {self._name}: {self._read_data()}>"
-
+    
+    def __contains__(self, key: int) -> bool:  # type: ignore[override]
+        with self._lock:
+            data = self._read_data()
+        return key in data
+    
     def close(self):
         if self._shm is None:
             return
