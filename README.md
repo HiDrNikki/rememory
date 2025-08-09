@@ -1,6 +1,6 @@
 # Rememory
 
-Rememory provides **shared-memory data structures** (`RememoryDict` and `RememoryList`) as well as basic types (`str`, `int`, `float`, and `bool`) that work safely across multiple processes – even across completely independent Python interpreters – using OS-level named locks.
+Rememory provides **shared-memory data structures** (`RememoryDict`, `RememoryList`, and `RememorySet`) as well as basic types (`str`, `int`, `float`, and `bool`) that work safely across multiple processes – even across completely independent Python interpreters – using OS-level named locks.
 
 This is designed for scenarios where you need a simple, Python-native way to share structured state between processes without relying on an external database or message broker. Data is serialized in shared memory using Python's pickle format.
 
@@ -9,7 +9,7 @@ This is designed for scenarios where you need a simple, Python-native way to sha
 * **Shared-memory backend** using `multiprocessing.shared_memory`
 * **Cross-process synchronization** with OS-level locks (Windows mutex / POSIX semaphore)
 * Works across separate scripts and interpreters, not just `multiprocessing.Process`
-* Drop-in replacements for `str`, `int`, `float`, `bool`, `Dict` and `List`
+* Drop-in replacements for `str`, `int`, `float`, `bool`, `Dict`, `List` and `Set`
 * Type-safe generics for editors and type checkers (e.g. `RememoryDict[str, int]`)
 
 
@@ -61,6 +61,35 @@ shared_list.append("world")
 # Read
 print(shared_list[0])  # "hello"
 for item in shared_list:
+    print(item)
+```
+
+### RememorySet
+
+```python
+from rememory import Set # RMSet, or RememorySet also work
+
+shared_set: Set[str] = Set("unique_items")
+
+# Add items
+shared_set.add("apple")
+shared_set.add("banana") 
+shared_set.add("apple")  # Duplicate, won't be added
+
+# Check membership
+if "apple" in shared_set:
+    print("Found apple!")
+
+# Remove items
+shared_set.discard("banana")  # Safe removal
+shared_set.remove("apple")    # Raises KeyError if not found
+
+# Set operations
+other_items = {"cherry", "date"}
+shared_set.update(other_items)  # Union update
+
+# Iterate
+for item in shared_set:
     print(item)
 ```
 ### RememoryInt
@@ -123,10 +152,11 @@ print(flag.value)
 
 ```python
 from multiprocessing import Process
-from rememory import Dict, List
+from rememory import Dict, List, Set
 
 SHARED_DICT = "game"
 SHARED_LIST = "events"
+SHARED_SET = "players"
 
 def worker():
     d = Dict[str, dict[str, int]](SHARED_DICT)
@@ -136,14 +166,19 @@ def worker():
 
     l = List[str](SHARED_LIST)
     l.append(f"{pid}-joined")
+    
+    s = Set[str](SHARED_SET)
+    s.add(f"player-{pid}")
 
 if __name__ == "__main__":
     d = Dict[str, dict[str, int]](SHARED_DICT)
     l = List[str](SHARED_LIST)
+    s = Set[str](SHARED_SET)
 
     # Clear previous state
     d._write_data({})
     l._write_data([])
+    s._writeData(set())
 
     procs = [Process(target=worker) for _ in range(4)]
     for p in procs: p.start()
@@ -151,6 +186,7 @@ if __name__ == "__main__":
 
     print("Shared dict:", dict(d.items()))
     print("Shared list:", list(l))
+    print("Shared set:", s.copy())
 ```
 
 ## Locking

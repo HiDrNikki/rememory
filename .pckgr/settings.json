@@ -1,0 +1,9 @@
+{
+    "ignore": [
+        "posix-ipc",
+        "pywin32"
+    ],
+    "alias": {
+        "posix-ipc": "posix_ipc"
+    }
+}

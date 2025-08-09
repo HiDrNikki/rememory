@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = [ "setuptools>=61.0",]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,22 +7,20 @@ name = "rememory"
 version = "0.3.4"
 description = "A set of lightweight shared memory variable types for safe multiprocessing access"
 readme = "README.md"
-license = { text = "MIT" }
-authors = [
-  { name = "Nichola Walch", email = "littler.compression@gmail.com" }
-]
 requires-python = ">=3.8"
-dependencies = [
-    'pywin32>=305; sys_platform == "win32"',
-    'posix-ipc>=1.2.0; sys_platform != "win32"',
-]
+dependencies = ["pywin32", "win32con", "win32event"]
+[[project.authors]]
+name = "Nichola Walch"
+email = "littler.compression@gmail.com"
 
-# CLI entry point
+[project.license]
+text = "MIT"
+
 [project.scripts]
 rememory = "testScript.__init__:main"
 
-[tool.setuptools]
-package-dir = {"" = "src"}
+[tool.setuptools.package-dir]
+"" = "src"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = [ "src",]

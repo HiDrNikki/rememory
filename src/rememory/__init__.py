@@ -33,3 +33,7 @@ from .sharedString import RememoryString as RMString
 from .sharedString import RememoryString as str
 from .sharedString import RememoryString
 
+from .sharedSet import RememorySet as RMSet
+from .sharedSet import RememorySet as Set
+from .sharedSet import RememorySet
+

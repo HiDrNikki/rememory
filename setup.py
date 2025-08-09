@@ -16,10 +16,7 @@ setup(
     package_data={
         "no": ["py.typed"],
     },
-    install_requires=[
-        "posix-ipc>=1.2.0; sys_platform != 'win32'",
-        "pywin32>=305; sys_platform == 'win32'",
-    ],
+    install_requires=["pywin32", "win32con", "win32event"],
     entry_points={
         "console_scripts": [
             "rememory = testScript.__init__:main",
